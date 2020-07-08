@@ -1,4 +1,5 @@
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
@@ -39,13 +40,32 @@ room['treasure'].s_to = room['narrow']
 
 # Make a new player object that is currently in the 'outside' room.
 
+player = Player(name="will", current_room="outside")
+
 # Write a loop that:
 #
 # * Prints the current room name
+current_room_name = player.current_room
+print(current_room_name)
 # * Prints the current description (the textwrap module might be useful here).
+
+current_room_description = room[current_room_name]
+
+print(current_room_description)
 # * Waits for user input and decides what to do.
 #
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+
+# * Create the input command parser in `adv.py` which allows the program to receive player input and commands to move to rooms
+#   in the four cardinal directions.
+# * Fill out Player and Room classes in `player.py` and `room.py`
+
+
+# * Add a REPL parser to `adv.py` that accepts directional commands to move the player
+#   * After each move, the REPL should print the name and description of the player's current room
+#   * Valid commands are `n`, `s`, `e` and `w` which move the player North, South, East or West
+#   * The parser should print an error if the player tries to move where there is no room.

@@ -50,6 +50,8 @@ The `/src` directory contains the files `adv.py`, which is where the main logic 
   * Players should have a `name` and `current_room` attributes
 
 
+#### day 2
+
 * Create a file called `item.py` and add an `Item` class in there.
 
   * The item should have `name` and `description` attributes.
