@@ -1,14 +1,5 @@
 # Implement a class to hold room information. This should have name and
 # description attributes.
-
-
-
-# * Put the Room class in `room.py` based on what you see in `adv.py`.
-
-#   * The room should have `name` and `description` attributes.
-
-#   * The room should also have `n_to`, `s_to`, `e_to`, and `w_to` attributes
-#     which point to the room in that respective direction.
 class Room:
     def __init__(self, name, description):
         self.name = name
@@ -16,15 +7,20 @@ class Room:
     
     def __str__(self):
         return self.description
-
+#   * The room should also have `n_to`, `s_to`, `e_to`, and `w_to` attributes
+#     which point to the room in that respective direction.
+# room['outside'].n_to = room['foyer']
     def n_to(self, name):
         self.name = name
-        if name == 'outside':
+        if self.name == 'outside':
             #global name
-            name = 'foyer'
+            self.name = 'foyer'
+    def __str__(self):
+        return self.name
+            
 
 
-# room['outside'].n_to = room['foyer']
+
 # room['foyer'].s_to = room['outside']
 # room['foyer'].n_to = room['overlook']
 # room['foyer'].e_to = room['narrow']
