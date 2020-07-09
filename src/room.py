@@ -7,24 +7,33 @@ class Room:
     
     def __str__(self):
         return self.description
-#   * The room should also have `n_to`, `s_to`, `e_to`, and `w_to` attributes
-#     which point to the room in that respective direction.
-# room['outside'].n_to = room['foyer']
-    def n_to(self, name):
-        self.name = name
+
+#   The room should also have `n_to`, `s_to`, `e_to`, and `w_to` attributes
+#   which point to the room in that respective direction.
+    def n_to(self):
         if self.name == 'outside':
-            #global name
             self.name = 'foyer'
-    def __str__(self):
+        elif self.name == 'foyer':
+            self.name = 'overlook'
+        elif self.name == 'narrow':
+            self.name = 'treasure'
         return self.name
-            
+    
+    def s_to(self):
+        if self.name == 'foyer':
+            self.name = 'outside'
+        elif self.name == 'overlook':
+            self.name = 'foyer'
+        elif self.name == 'treasure':
+            self.name = 'narrow'
+        return self.name
+         
+    def e_to(self):
+        if self.name == 'foyer':
+            self.name = 'narrow'
+        return self.name
 
-
-
-# room['foyer'].s_to = room['outside']
-# room['foyer'].n_to = room['overlook']
-# room['foyer'].e_to = room['narrow']
-# room['overlook'].s_to = room['foyer']
-# room['narrow'].w_to = room['foyer']
-# room['narrow'].n_to = room['treasure']
-# room['treasure'].s_to = room['narrow']
+    def w_to(self):
+        if self.name == 'narrow':
+            self.name = 'foyer'
+        return self.name
