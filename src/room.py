@@ -4,6 +4,8 @@ class Room:
     def __init__(self, name, description):
         self.name = name
         self.description = description
+        # The Room class should be extended with a list that holds the Items that are currently in that room.
+        self.room_item_list = []
     
     def __str__(self):
         return self.description
@@ -37,3 +39,19 @@ class Room:
         if self.name == 'narrow':
             self.name = 'foyer'
         return self.name
+
+
+    def add_items(self, item):
+        self.item = item
+        self.room_item_list.append(item)
+
+
+    def display_items(self):
+        return [item.name for item in self.room_item_list]
+
+    # room_item_list = ['torch', 'rocks']
+    # def print_item_list(self, room_item_list=room_item_list):
+    #     self.room_item_list = room_item_list
+    #     return room_item_list
+
+
