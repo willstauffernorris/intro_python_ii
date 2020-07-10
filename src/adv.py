@@ -1,6 +1,8 @@
 from room import Room
 from item import Item
 from player import Player
+import os
+
 
 # Declare all the rooms
 
@@ -25,11 +27,11 @@ earlier adventurers. The only exit is to the south."""),
 
 
 item = {
-    'sword': Item("Sword of Destiny", "Used for spreading cream cheese."),
+    'sword': Item("sword", "Used for spreading cream cheese."),
 
-    'torch' : Item("Flaming Hot Torch", "Used for lighting the way."),
+    'torch' : Item("torch", "Used for lighting the way."),
 
-    'coin' : Item("Shiny Golden Coin", "Can trade for dried fish.")
+    'coin' : Item("coin", "Can trade for dried fish.")
 }
 
 # Make a new player object that is currently in the 'outside' room.
@@ -38,9 +40,9 @@ room_object = Room(player.current_room, room[player.current_room])
 
 #print(f'You have these items: {player.display_items()}.')
 
-torch = Item("torch", "Used for lighting the way.")
-sword = Item("sword", "Used for spreading cream cheese.")
-coin = Item("coin", "Can trade for dried fish.")
+# torch = Item("torch", "Used for lighting the way.")
+# sword = Item("sword", "Used for spreading cream cheese.")
+# coin = Item("coin", "Can trade for dried fish.")
 
 
 #player.add_items(torch)
@@ -54,9 +56,13 @@ print("----------")
 
 
 #print(f"The {room['outside'].name} contains these items: {room['outside'].display_items()}")
-room['outside'].add_items(torch)
-room['outside'].add_items(sword)
-room['foyer'].add_items(coin)
+room['outside'].add_items(item['torch'])
+room['outside'].add_items(item['sword'])
+room['foyer'].add_items(item['coin'])
+
+
+
+
 # print(f"NOW, the {room['outside'].name} contains these items: {room['outside'].display_items()}")
 
 ## Intro line
@@ -81,21 +87,27 @@ valid_list = ['n','s', 'e', 'w', 'i']
 
 print()
 # Write a loop that:
+#
+error = False
 while True:
+
+    if error == False:
     #Prints the current room name
-    current_room_name = player.current_room
-    ## The stuff in front of 'player name' makes the name bold
-    print('\033[1m' +f"{player.name} " + '\033[0m' + f"arrives in the {room[current_room_name].name}.")
+        os.system('cls' if os.name == 'nt' else 'clear')
+        current_room_name = player.current_room
+        ## The stuff in front of 'player name' makes the name bold
+        print('\033[1m' +f"{player.name} " + '\033[0m' + f"arrives in the {room[current_room_name].name}.")
 
-    # Add functionality to the main loop that prints out all the items that are visible to the player when they are in that room.
-    print(f"The {room[current_room_name].name} contains these items: {room[current_room_name].display_items()}")
+        # Add functionality to the main loop that prints out all the items that are visible to the player when they are in that room.
+        print(f"The {room[current_room_name].name} contains these items: {room[current_room_name].display_items()}")
 
-    # Prints the current description (the textwrap module might be useful here).
-    current_room_description = room[current_room_name]
-    print(f"""{current_room_description}""")
+        # Prints the current description (the textwrap module might be useful here).
+        current_room_description = room[current_room_name]
+        print(f"""{current_room_description}""")
+        
+        print("~~~~~~~~~~~\n")
     
-    print("~~~~~~~~~~~\n")
-
+    error = False
     # The input command parser
     # It waits for user input and commands to move to rooms in the four cardinal directions.
     # Valid commands are `n`, `s`, `e` and `w` which move the player North, South, East or West
@@ -111,28 +123,45 @@ while True:
         # such as "take coins" or "drop sword"
 
 
-# If the user enters get or take followed by an Item name, look at the contents of the current Room to see if the item is there.
 
-# If it is there, remove it from the Room contents, and add it to the Player contents.
-
-# If it's not there, print an error message telling the user so.
-
-
-# Call on_take method in Item. when the Item is picked up by the player.
-# Implement support for the verb drop followed by an Item name. This is the opposite of get/take.
-
-
-
+        # If the user enters get or take followed by an Item name, look at the contents of the current Room to see if the item is there.    
+        # If it is there, remove it from the Room contents, and add it to the Player contents.
+        # If it's not there, print an error message telling the user so.
         if split_input[0] == 'get':
-            player.add_items(item[split_input[1]].name)
-            print(f"You have picked up a {item[split_input[1]].name}!")
+            #print(room[current_room_name].display_items())
+            if split_input[1] in room[current_room_name].display_items():
+                player.add_items(item[split_input[1]].name)
+                room[current_room_name].remove_items(item[split_input[1]])
+                print(f"You have picked up a {item[split_input[1]].name}!")
+                #print(f'item in list: {item[split_input[1]]}')
+                #print(f'room item list: {room[current_room_name].room_item_list}')
+                #print(split_input[1])
+                #print(room[current_room_name].display_items())
+                #print("00000000")
+                #print(current_room_name)
+                #print(room[current_room_name])
+                #room['outside'].add_items(torch)
+                #print(room[current_room_name].display_items())
+            else: 
+                print("INVALID COMMAND")
+                error = True
 
         elif split_input[0] == 'drop':
-            player.drop_items(item[split_input[1]].name)
-            print(f"You have dropped a {item[split_input[1]].name}.")
+            if split_input[1] in player.display_items():
+                player.drop_items(item[split_input[1]].name)
+                room[current_room_name].add_items(item[split_input[1]])
+                print(f"You have dropped a {item[split_input[1]].name}.")
+            else: 
+                print("INVALID COMMAND")
+                error = True
         
         else: 
             print("Please enter a valid command.")
+            error = True
+
+
+
+
 
     if len(split_input) == 1:
 
@@ -156,6 +185,7 @@ while True:
 # Add the i and inventory commands that both show a list of items currently carried by the player.
         elif user_input is 'i':
             print(f'{player.name} holds these items: {player.items}.')
+            error = True
 
         # If the user enters "q", quit the game.
         elif user_input is 'q':
@@ -167,8 +197,11 @@ while True:
 
         elif user_input not in valid_list:
             print("Please input a valid direction (n,s,e,w)")
+            error = True
 
         # Print an error message if the movement isn't allowed.
         #  The parser should print an error if the player tries to move where there is no room.
         else:
             print("You cannot travel in this direction")
+            error = True
+    
